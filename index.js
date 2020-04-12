@@ -17,7 +17,11 @@ app.listen(3000, function(){
 
 //全てのリクエストに対する処理を行う
 app.use('/*', function(request, response, next) {
-    let dataPath = requestParser.dataRequestPath(dataDirectory, request);
-    let result = fileAccess.loadJson(dataPath);
-    response.json(result);
+    let observer = requestParser.requestJsonPath(dataRequestPath, request);
+    observer.flatMap( path => {
+        return fileAccess.responseData(path);
+    })
+    .subscribe(result => {
+        response.json(result);
+    })
 });
