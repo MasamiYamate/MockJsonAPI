@@ -1,4 +1,5 @@
 const express = require('express');
+const rx = require('rxjs');
 const bodyParser = require('body-parser');
 const requestParser = require('./lib/request-parser');
 const fileAccess = require('./lib/file-access-manager');
@@ -17,11 +18,11 @@ app.listen(3000, function(){
 
 //全てのリクエストに対する処理を行う
 app.use('/*', function(request, response, next) {
-    let observer = requestParser.requestJsonPath(dataRequestPath, request);
-    observer.flatMap( path => {
-        return fileAccess.responseData(path);
-    })
-    .subscribe(result => {
+    let observer = requestParser.requestJsonPath(dataDirectory, request);
+    console.log(observer);
+    let result = fileAccess.responseData(observer);
+    result.subscribe(result => {
+        console.log(result);
         response.json(result);
     })
 });
