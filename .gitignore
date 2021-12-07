@@ -106,5 +106,5 @@ dist
 .DS_Store
 
 # json files
-./data/*
+data/*
 !.gitkeep
