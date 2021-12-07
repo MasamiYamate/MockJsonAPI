@@ -19,10 +19,10 @@ app.listen(3000, function(){
 //全てのリクエストに対する処理を行う
 app.use('/*', function(request, response, next) {
     let observer = requestParser.requestJsonPath(dataDirectory, request);
-    console.log(observer);
     let result = fileAccess.responseData(observer);
     result.subscribe(result => {
-        console.log(result);
-        response.json(result);
-    })
+        response.status(200).json(result);
+    }, error => {
+        response.status(404).send(error.message);
+    });
 });
